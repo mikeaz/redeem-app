@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>zkSync Transaction</title>
+</head>
+<body>
+  <h1>Network Switcher</h1>
+  <form id="networkForm">
+    <label>
+      <input type="radio" name="network" value="eth" checked>
+      Mainnet
+    </label>
+    <label>
+      <input type="radio" name="network" value="arbitrum">
+      Arbitrum
+    </label>
+    <label>
+      <input type="radio" name="network" value="zksync">
+      zkSync Era
+    </label>
+    <button type="button" id="switchNetwork">Switch Network</button>
+  </form>
+  <h1>zkSync Transaction Sender</h1>
+  <button id="sendTx">Send Transaction</button>
+  <script type="module" src="./main.ts"></script>
+</body>
+</html>
