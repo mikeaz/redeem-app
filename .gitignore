@@ -3,7 +3,7 @@ out
 
 # Hardhat files
 cache
-artifacts
+#artifacts
 build/contracts
 bin
 
