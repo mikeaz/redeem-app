@@ -10,12 +10,10 @@ import { HDNodeWallet } from "ethers/wallet";
 import { BigNumberish } from "ethers";
 
 import PriceFeedArtifact from "./artifacts/contracts/PriceFeed.sol/PriceFeed.json"; // Adjust the path as necessary
-const priceFeedAbi = PriceFeedArtifact.abi; // Extract the ABI from the JSON
 //import PriceFeedL2Artifact from "./artifacts/contracts/Pricing/PriceFeedL2.sol/PriceFeedL2.json"; // Adjust the path as necessary
 import VesselManagerArtifact from "./artifacts/contracts/VesselManager.sol/VesselManager.json"; // Adjust the path as necessary
 import VesselManagerOperationsArtifact from "./artifacts/contracts/VesselManagerOperations.sol/VesselManagerOperations.json"; // Adjust the path as necessary
 import SortedVesselsArtifact from "./artifacts/contracts/SortedVessels.sol/SortedVessels.json"; // Adjust the path as necessary
-import OracleArtifact from "./artifacts/contracts/EACAggregatorProxy.sol/EACAggregatorProxy.json";
 import DebtTokenArtifact from "./artifacts/contracts/DebtToken.sol/DebtToken.json";
 
 // Declare provider and signer globally
@@ -192,20 +190,6 @@ document.getElementById("sendTx")?.addEventListener("click", async () => {
       console.error("Invalid GRAI amount");
       return;
     }
-
-    
-    //REAL CHAINLINK PRICEFEED  https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum&page=1&search=reth
-    const oracle_arb_wsteth_addr = '0xb523AE262D20A936BC152e6023996e46FDC2A95D' //is this the right one??
-    const oracle_arb_weth_addr = '0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612'
-    const oracle_arb_reth_addr = '0xF3272CAfe65b190e76caAF483db13424a3e23dD2' // "blue dot"  
-    const oracle_arb_sfrxeth_addr = '0x98E5a52fB741347199C08a7a3fcF017364284431'   
-    const oracle_arb_weeth_addr = '0x20bAe7e1De9c596f5F7615aeaa1342Ba99294e12' //blue dot
-    
-    const oracle_zk_wsteth_addr = '0x24a0C9404101A8d7497676BE12F10aEa356bAC28' 
-    const oracle_zk_weth_addr = '0x6D41d1dc818112880b40e26BD6FD347E41008eDA'
-    
-    let oracle_addr_eth: string;
-    let oracle_addr_wsteth: string;
     
     // See https://docs.gravitaprotocol.com/gravita-docs/about-gravita-protocol/smart-contracts
     // for contract addresses on diff chains. 
@@ -230,11 +214,9 @@ document.getElementById("sendTx")?.addEventListener("click", async () => {
     {
       console.log("arbitrum")
       // Set the collateral you want to redeem (ARB)
-      oracle_addr_eth = oracle_arb_weth_addr;
       if (collateral=='weth') {
         collateralAddress = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1" //WETH
       }
-      oracle_addr_wsteth = oracle_arb_wsteth_addr;
       if (collateral=='wsteth') {
         collateralAddress = "0x5979d7b546e38e414f7e9822514be443a4800529" //wstETH
       }
@@ -257,12 +239,10 @@ document.getElementById("sendTx")?.addEventListener("click", async () => {
       vessel_mgr_ops_addr = '0x03569d4c117f94e72e9f63B06F406c5bc7caddE9'
       sorted_vessels_addr = '0x48dF3880Be9dFAAC56960325FA9a32B31fd351EA'
     
-      oracle_addr_eth = oracle_zk_weth_addr;
       if (collateral=='weth') {
         collateralAddress = "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91" //WETH
       }
     
-      oracle_addr_wsteth = oracle_zk_wsteth_addr;
       if (collateral=='wsteth') {
         collateralAddress = "0x703b52f2b28febcb60e1372858af5b18849fe867" //wstETH
       }
@@ -277,36 +257,36 @@ document.getElementById("sendTx")?.addEventListener("click", async () => {
         sorted_vessels_addr = '0xF31D88232F36098096d1eB69f0de48B53a1d18Ce'
         price_feed_addr = '0x89F1ecCF2644902344db02788A790551Bb070351'
       
-        oracle_addr_eth = oracle_zk_weth_addr;
         if (collateral=='weth') {
           collateralAddress = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2" //WETH
         }
       
-        oracle_addr_wsteth = oracle_zk_wsteth_addr;
         if (collateral=='wsteth') {
           collateralAddress = "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0" //wstETH
+        }
+
+        if (collateral=='sweth') {
+          collateralAddress = "0xf951E335afb289353dc249e82926178EaC7DEd78" //swETH
+        }
+
+        if (collateral=='reth') {
+          collateralAddress = "0xae78736cd615f374d3085123a210448e74fc6393" //rETH
+        }
+
+        if (collateral=='weeth') {
+          collateralAddress = "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee" //weETH
         }
       }
     
 
-      const PriceFeed = new ethers.Contract(price_feed_addr, priceFeedAbi, signer)
-      
-      const Oracle = new ethers.Contract(oracle_addr_eth, OracleArtifact.abi, signer)
-      const OracleWSTETH = new ethers.Contract(oracle_addr_wsteth, OracleArtifact.abi, signer)
-    
+      const PriceFeed = new ethers.Contract(price_feed_addr, PriceFeedArtifact.abi, signer)
       const vesselManager = new ethers.Contract(vessel_mgr_addr, VesselManagerArtifact.abi, signer);
       const vesselManagerOperations = new ethers.Contract(vessel_mgr_ops_addr, VesselManagerOperationsArtifact.abi, signer);
       const sortedVessels = new ethers.Contract(sorted_vessels_addr, SortedVesselsArtifact.abi, signer);
     
-      const ethPrice = await Oracle.latestAnswer(); // e.g., 2000 * 10^8
-      const wstETHToStETHRate = await OracleWSTETH.latestAnswer(); // e.g., 1.05 * 10^18
-    
-    
-      var price = ethPrice * 10n ** 10n; // Use `bigint` for multiplication
-      console.log("ETH Price: ", price);
-    
-      price = await PriceFeed.fetchPrice(collateralAddress);
-    
+      var price = await PriceFeed.fetchPrice(collateralAddress);
+      console.log(collateral, " Price: ", price);
+
     
        // Get the redemptions hints from the deployed HintHelpers contract
         var redemptionhint = await vesselManagerOperations.getRedemptionHints(collateralAddress, LUSDAmount, price, 50)

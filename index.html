@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>zkSync Transaction</title>
+  <title>GRAI Redemption Helper</title>
 </head>
 <body>
-  <h1>Network</h1>
+  <h1>GRAI Redemption Helper</h1>
+  <h2>Network</h2>
   <form id="networkForm">
     <label>
       <input type="radio" name="network" value="eth" checked>
@@ -22,7 +23,7 @@
     </label>
     <button type="button" id="switchNetwork">Switch</button>
   </form>
-  <h1>Collateral </h1>
+  <h2>Collateral </h2>
   <form id="collateralForm">
     <label>
       <input type="radio" name="collateral" value="weth" checked>
@@ -44,12 +45,16 @@
       <input type="radio" name="collateral" value="sfrxeth">
       sfrxETH
     </label>
+    <label>
+      <input type="radio" name="collateral" value="sweth">
+      swETH
+    </label>
     <br><br>
     <label for="graiAmount">Amount of GRAI to Redeem:</label>
     <input type="number" id="graiAmount" placeholder="Enter amount">
     <button type="button" id="maxGRAI">MAX</button>
   </form>
-  <h1>Transaction</h1>
+  <h2>Transaction</h2>
   <button id="sendTx">Send Transaction</button>
   <script type="module" src="./main.ts"></script>
 </body>
