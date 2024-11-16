@@ -62,9 +62,42 @@
     }
 
     .radio-group {
-      display: flex;
-      gap: 20px; /* Add spacing between radio buttons */
-    }
+    display: block;
+    gap: 10px; /* Space between buttons */
+  }
+
+  .radio-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2a2a2a; /* Default dark background */
+    color: #ffffff; /* White text */
+    border: 1px solid #444; /* Subtle border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer;
+    user-select: none; /* Prevent text selection on click */
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .radio-button input[type="radio"] {
+    display: none; /* Hide the default radio button */
+  }
+
+  .radio-button span {
+    display: inline-block; /* Ensure the text spans the button area */
+  }
+
+  .radio-button:hover {
+    background-color: #3a3a3a; /* Slightly lighter background on hover */
+  }
+
+  /* Keep the button blue when selected */
+  .radio-button input[type="radio"]:checked + span {
+    background-color: #007bffa4;
+    color: #ffffff;
+    padding: 0px 0px; /* Match the parent padding */
+    border-radius:10px;
+    display: inline-block;
+  }
 
     #redeemTx {
       margin-top: 10px;
@@ -74,53 +107,60 @@
 </head>
 <body>
   <h1>GRAI Redemption Helper</h1>
-  <h2>Network</h2>
   <form id="networkForm">
-    <label>
-      <input type="radio" name="network" value="eth" checked>
-      Mainnet
-    </label>
-    <label>
-      <input type="radio" name="network" value="arbitrum">
-      Arbitrum
-    </label>
-    <label>
-      <input type="radio" name="network" value="zksync">
-      zkSync Era
-    </label>
+      <div class="radio-group">
+        <label class="radio-button">
+          <input type="radio" name="network" value="eth" checked>
+        <span>Mainnet</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="network" value="arbitrum">
+        <span>Arbitrum</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="network" value="zksync">
+        <span>zkSync Era</span>
+      </label>
+      </div>
   </form>
-  <h2>Collateral </h2>
   <form id="collateralForm">
-    <label>
-      <input type="radio" name="collateral" value="weth" checked>
-      WETH
-    </label>
-    <label>
-      <input type="radio" name="collateral" value="wsteth">
-      wstETH
-    </label>
-    <label>
-      <input type="radio" name="collateral" value="weeth">
-      weETH (Arbitrum/Mainnet)
-    </label>
-    <label>
-      <input type="radio" name="collateral" value="reth">
-      rETH (Arbitrum/Mainnet)
-    </label>
-    <label>
-      <input type="radio" name="collateral" value="sfrxeth">
-      sfrxETH (Arbitrum only)
-    </label>
-    <label>
-      <input type="radio" name="collateral" value="sweth">
-      swETH (Mainnet only)
-    </label>
-    <br><br>
-    <label for="graiAmount">Amount of GRAI to Redeem:</label>
-    <input type="number" id="graiAmount" placeholder="Enter amount">
-    <button type="button" id="maxGRAI">MAX</button>
+    <label>Collateral:</label>
+    <div class="radio-group">
+      <label class="radio-button">
+        <input type="radio" name="collateral" value="weth" checked>
+        <span>WETH</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="collateral" value="wsteth">
+        <span>wstETH</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="collateral" value="weeth">
+        <span>weETH</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="collateral" value="reth">
+        <span>rETH</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="collateral" value="sfrxeth">
+        <span>sfrxETH</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="collateral" value="sweth">
+        <span>swETH</span>
+      </label>
+      <br><br>
+      <label for="graiAmount">Amount of GRAI to Redeem:</label>
+      <input type="number" id="graiAmount" placeholder="Enter amount">
+      <button type="button" id="maxGRAI">MAX</button>
+      <br><br>
+      <div class="form-group">
+        <label for="graiBalance">Current GRAI Balance:</label>
+        <span id="graiBalance">Loading...</span>
+      </div>
+    </div>
   </form>
-  <h2>Transaction</h2>
   <button id="sendTx">Send Transaction</button>
   <script type="module" src="./main.ts"></script>
 </body>

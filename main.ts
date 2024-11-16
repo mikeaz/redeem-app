@@ -23,6 +23,17 @@ let signer: ethers.Signer;
 async function initialize() {
   provider = new ethers.BrowserProvider(window.ethereum);
   signer = await provider.getSigner();
+  updateGRAIBalance();
+}
+
+async function updateGRAIBalance() {
+  const balanceElement = document.getElementById("graiBalance");
+  if (!balanceElement) return;
+
+  balanceElement.textContent = "Loading...";
+  const balance = await fetchGRAIBalance();
+  const formattedBalance = parseFloat(balance).toFixed(4); // Limit to 4 decimals
+  balanceElement.textContent = `${formattedBalance} GRAI`;
 }
 
 const networks = {
@@ -30,16 +41,19 @@ const networks = {
     chainId: "0x1", // Arbitrum One chainId in hex (42161 in decimal)
     chainName: "Ethereum Mainnet",
     rpcUrl: "wss://ethereum-rpc.publicnode.com", // Optional, mainly handled by Rabby
+    availableCollaterals: ["weth", "wsteth", "weeth", "reth", "sweth"], // Collaterals for Mainnet
   },
   arbitrum: {
     chainId: "0xa4b1", // Arbitrum One chainId in hex (42161 in decimal)
     chainName: "Arbitrum One",
     rpcUrl: "https://arb1.arbitrum.io/rpc", // Optional, mainly handled by Rabby
+    availableCollaterals: ["weth", "wsteth", "weeth", "reth", "sfrxeth"], // Collaterals for Arbitrum
   },
   zksync: {
     chainId: "0x144", // zkSync Era chainId in hex (324 in decimal)
     chainName: "zkSync Era",
     rpcUrl: "https://zksync2-mainnet.zksync.io", // Optional
+    availableCollaterals: ["weth", "wsteth"], // Collaterals for zkSync
   },
 };
 
@@ -50,6 +64,7 @@ const graiAddresses: { [chainId: number]: string } = {
 };
 
 async function switchNetwork(chainId: string) {
+  await initialize();
   if (!window.ethereum) {
     alert("Rabby Wallet or another compatible wallet is required.");
     return;
@@ -351,4 +366,55 @@ document.getElementById("sendTx")?.addEventListener("click", async () => {
   } catch (error) {
     console.error("Error:", error);
   }
+});
+
+async function initializeNetworkSwitcher() {
+  const provider = new ethers.BrowserProvider(window.ethereum);
+  const network = await provider.getNetwork();
+  const currentChainId = `0x${network.chainId.toString(16)}`; // Convert to hex
+
+  const selectedNetworkKey = Object.keys(networks).find(
+    (key) => networks[key].chainId === currentChainId
+  );
+
+  if (selectedNetworkKey) {
+    updateCollateralOptions(selectedNetworkKey);
+
+    const radioButton = document.querySelector(
+      `input[name="network"][value="${selectedNetworkKey}"]`
+    ) as HTMLInputElement;
+    if (radioButton) radioButton.checked = true;
+  } else {
+    console.warn("Unknown network detected");
+  }
+}
+
+function updateCollateralOptions(networkKey: string) {
+  const availableCollaterals = networks[networkKey].availableCollaterals;
+  const allCollaterals = document.querySelectorAll<HTMLInputElement>(
+    'input[name="collateral"]'
+  );
+
+  allCollaterals.forEach((input) => {
+    const parentLabel = input.closest(".radio-button");
+    if (parentLabel) {
+      if (availableCollaterals.includes(input.value)) {
+        parentLabel.style.display = "inline-block"; // Show available collaterals
+      } else {
+        parentLabel.style.display = "none"; // Hide unavailable collaterals
+      }
+    }
+  });
+}
+
+// Reinitialize collaterals on network change
+window.ethereum.on("chainChanged", () => {
+  initializeNetworkSwitcher();
+});
+
+// Initialize app on load
+// Initialize on page load
+document.addEventListener("DOMContentLoaded", () => {
+  initialize();
+  initializeNetworkSwitcher();
 });
