@@ -85,17 +85,18 @@ async function switchNetwork(chainId: string) {
   }
 }
 
-// Handle form submission
-document.getElementById("switchNetwork")?.addEventListener("click", () => {
-  const form = document.getElementById("networkForm") as HTMLFormElement;
-  const formData = new FormData(form);
-  const selectedNetwork = formData.get("network") as string;
-
-  if (selectedNetwork && networks[selectedNetwork]) {
-    switchNetwork(networks[selectedNetwork].chainId);
-  } else {
-    alert("Invalid network selection");
-  }
+document.querySelectorAll('input[name="network"]').forEach((radio) => {
+  radio.addEventListener("change", async (event) => {
+    const form = document.getElementById("networkForm") as HTMLFormElement;
+    const formData = new FormData(form);
+    const selectedNetwork = formData.get("network") as string;
+  
+    if (selectedNetwork && networks[selectedNetwork]) {
+      switchNetwork(networks[selectedNetwork].chainId);
+    } else {
+      alert("Invalid network selection");
+    }
+  });
 });
 
 // Determine the network and fetch the balance using the appropriate GRAI address

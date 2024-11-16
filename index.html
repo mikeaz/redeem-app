@@ -4,6 +4,73 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GRAI Redemption Helper</title>
+  <style>
+    /* Dark theme styles */
+    body {
+      background-color: #121212;
+      color: #d3d3d3;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      color: #ffffff;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    form {
+      margin: 20px;
+      padding: 10px;
+      background-color: #1e1e1e;
+      border-radius: 8px;
+    }
+
+    .form-group {
+      display: flex;
+      justify-content: space-between; /* Space out the elements */
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    input, button {
+      background-color: #2a2a2a;
+      color: #ffffff;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 10px;
+      margin: 5px 0;
+    }
+
+    input[type="radio"] {
+      width: auto;
+      margin-right: 5px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3a3a3a;
+    }
+
+    label {
+      display: block;
+      margin-right: 10px;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 20px; /* Add spacing between radio buttons */
+    }
+
+    #redeemTx {
+      margin-top: 10px;
+      width: auto;
+    }
+  </style>
 </head>
 <body>
   <h1>GRAI Redemption Helper</h1>
@@ -21,7 +88,6 @@
       <input type="radio" name="network" value="zksync">
       zkSync Era
     </label>
-    <button type="button" id="switchNetwork">Switch</button>
   </form>
   <h2>Collateral </h2>
   <form id="collateralForm">
@@ -35,19 +101,19 @@
     </label>
     <label>
       <input type="radio" name="collateral" value="weeth">
-      weETH
+      weETH (Arbitrum/Mainnet)
     </label>
     <label>
       <input type="radio" name="collateral" value="reth">
-      rETH
+      rETH (Arbitrum/Mainnet)
     </label>
     <label>
       <input type="radio" name="collateral" value="sfrxeth">
-      sfrxETH
+      sfrxETH (Arbitrum only)
     </label>
     <label>
       <input type="radio" name="collateral" value="sweth">
-      swETH
+      swETH (Mainnet only)
     </label>
     <br><br>
     <label for="graiAmount">Amount of GRAI to Redeem:</label>
