@@ -30,7 +30,7 @@ async function updateGRAIBalance() {
   const balanceElement = document.getElementById("graiBalance");
   if (!balanceElement) return;
 
-  balanceElement.textContent = "Loading...";
+  balanceElement.textContent = "";
   const balance = await fetchGRAIBalance();
   const formattedBalance = parseFloat(balance).toFixed(4); // Limit to 4 decimals
   balanceElement.textContent = `${formattedBalance} GRAI`;

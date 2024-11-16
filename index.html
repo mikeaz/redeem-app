@@ -25,12 +25,14 @@
       padding: 10px;
       background-color: #1e1e1e;
       border-radius: 8px;
+      display: flex;
+      flex-direction: column; /* Stack elements vertically */
+      align-items: center; /* Center elements horizontally */
     }
 
     .form-group {
-      display: flex;
-      justify-content: space-between; /* Space out the elements */
-      align-items: center;
+      display: block;
+      align-items: center; /* Center elements horizontally */
       margin-bottom: 15px;
     }
 
@@ -99,10 +101,22 @@
     display: inline-block;
   }
 
-    #redeemTx {
-      margin-top: 10px;
-      width: auto;
-    }
+  #sendTx {
+  display: block; /* Make the button a block element to center it */
+  margin: 20px auto; /* Center horizontally and add vertical spacing */
+  padding: 15px 30px; /* Increase padding for a bigger button */
+  font-size: 18px; /* Increase font size for better readability */
+  background-color: #007bff; /* Blue background */
+  color: #ffffff; /* White text */
+  border: none; /* Remove border */
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.2s ease; /* Smooth hover transition */
+}
+
+#sendTx:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
   </style>
 </head>
 <body>
@@ -151,17 +165,17 @@
         <span>swETH</span>
       </label>
       <br><br>
-      <label for="graiAmount">Amount of GRAI to Redeem:</label>
-      <input type="number" id="graiAmount" placeholder="Enter amount">
-      <button type="button" id="maxGRAI">MAX</button>
-      <br><br>
       <div class="form-group">
+        <label for="graiAmount">Amount of GRAI to Redeem:</label>
+        <input type="number" id="graiAmount" placeholder="Enter amount">
+        <button type="button" id="maxGRAI">MAX</button>
+        <br><br>
         <label for="graiBalance">Current GRAI Balance:</label>
-        <span id="graiBalance">Loading...</span>
+        <span id="graiBalance"></span>
       </div>
     </div>
   </form>
-  <button id="sendTx">Send Transaction</button>
+  <button id="sendTx">Redeem Collateral</button>
   <script type="module" src="./main.ts"></script>
 </body>
 </html>
