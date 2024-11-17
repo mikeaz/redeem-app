@@ -1,14 +1,6 @@
 // Import everything
 import { ethers } from "ethers";
 
-// Import just a few select items
-import { BrowserProvider, parseUnits } from "ethers";
-
-// Import from a specific export
-import { HDNodeWallet } from "ethers/wallet";
-
-import { BigNumberish } from "ethers";
-
 import PriceFeedArtifact from "./artifacts/contracts/PriceFeed.sol/PriceFeed.json"; // Adjust the path as necessary
 //import PriceFeedL2Artifact from "./artifacts/contracts/Pricing/PriceFeedL2.sol/PriceFeedL2.json"; // Adjust the path as necessary
 import VesselManagerArtifact from "./artifacts/contracts/VesselManager.sol/VesselManager.json"; // Adjust the path as necessary
@@ -36,32 +28,65 @@ async function updateGRAIBalance() {
   balanceElement.textContent = `${formattedBalance} GRAI`;
 }
 
+// See https://docs.gravitaprotocol.com/gravita-docs/about-gravita-protocol/smart-contracts
+// for contract addresses on diff chains. 
+  
 const networks = {
   eth: {
-    chainId: "0x1", // Arbitrum One chainId in hex (42161 in decimal)
+    chainId: 1, // Ethereum chainId in hex
     chainName: "Ethereum Mainnet",
     rpcUrl: "wss://ethereum-rpc.publicnode.com", // Optional, mainly handled by Rabby
-    availableCollaterals: ["weth", "wsteth", "weeth", "reth", "sweth"], // Collaterals for Mainnet
+    availableCollaterals: {
+      weth: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      wsteth: "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+      weeth: "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
+      reth: "0xae78736cd615f374d3085123a210448e74fc6393",
+      sweth: "0xf951E335afb289353dc249e82926178EaC7DEd78",
+    },
+    graiAddress: "0x15f74458aE0bFdAA1a96CA1aa779D715Cc1Eefe4", // GRAI on Ethereum
+    vesselManagerAddress: "0xdB5DAcB1DFbe16326C3656a88017f0cB4ece0977",
+    vesselManagerOperationsAddress: "0xc49B737fa56f9142974a54F6C66055468eC631d0",
+    sortedVesselsAddress: "0xF31D88232F36098096d1eB69f0de48B53a1d18Ce",
+    priceFeedAddress: "0x89F1ecCF2644902344db02788A790551Bb070351",
   },
   arbitrum: {
-    chainId: "0xa4b1", // Arbitrum One chainId in hex (42161 in decimal)
+    chainId: 42161, // Arbitrum One chainId in hex (42161 in decimal)
     chainName: "Arbitrum One",
     rpcUrl: "https://arb1.arbitrum.io/rpc", // Optional, mainly handled by Rabby
-    availableCollaterals: ["weth", "wsteth", "weeth", "reth", "sfrxeth"], // Collaterals for Arbitrum
+    availableCollaterals: {
+      weth: "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
+      wsteth: "0x5979d7b546e38e414f7e9822514be443a4800529",
+      weeth: "0x35751007a407ca6feffe80b3cb397736d2cf4dbe",
+      reth: "0xEC70Dcb4A1EFa46b8F2D97C310C9c4790ba5ffA8",
+      sfrxeth: "0x95ab45875cffdba1e5f451b950bc2e42c0053f39",
+    }, 
+    graiAddress: "0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487", // GRAI on Arbitrum
+    vesselManagerAddress: "0x6AdAA3eBa85c77e8566b73AEfb4C2f39Df4046Ca",
+    vesselManagerOperationsAddress: "0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4",
+    sortedVesselsAddress: "0xc49B737fa56f9142974a54F6C66055468eC631d0",
+    priceFeedAddress: "0xF0e0915D233C616CB727E0b2Ca29ff0cbD51B66A",
   },
   zksync: {
-    chainId: "0x144", // zkSync Era chainId in hex (324 in decimal)
+    chainId: 324, // zkSync Era chainId in hex (324 in decimal)
     chainName: "zkSync Era",
     rpcUrl: "https://zksync2-mainnet.zksync.io", // Optional
-    availableCollaterals: ["weth", "wsteth"], // Collaterals for zkSync
+    availableCollaterals: {
+      weth: "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91",
+      wsteth: "0x703b52f2b28febcb60e1372858af5b18849fe867",
+    },
+    graiAddress: "0x5FC44E95eaa48F9eB84Be17bd3aC66B6A82Af709", // GRAI on zkSync
+    vesselManagerAddress: "0x8D9CDd9372740933702d606EaD3BB55dFfDC6303",
+    vesselManagerOperationsAddress: "0x03569d4c117f94e72e9f63B06F406c5bc7caddE9",
+    sortedVesselsAddress: "0x48dF3880Be9dFAAC56960325FA9a32B31fd351EA",
+    priceFeedAddress: "0x086D0981204b3e603Bf8b70D42680DA10b4dDa31",
   },
 };
 
-const graiAddresses: { [chainId: number]: string } = {
-  1: "0x15f74458aE0bFdAA1a96CA1aa779D715Cc1Eefe4",      // Ethereum Mainnet
-  42161: "0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487",         // Arbitrum One
-  324: "0x5FC44E95eaa48F9eB84Be17bd3aC66B6A82Af709",          // zkSync Era
-};
+// Create chainId-to-networkKey mapping
+const chainIdToNetworkKey = Object.entries(networks).reduce(
+  (acc, [key, { chainId }]) => ({ ...acc, [chainId]: key }),
+  {}
+);
 
 async function switchNetwork(chainId: string) {
   await initialize();
@@ -120,7 +145,7 @@ document.querySelectorAll('input[name="network"]').forEach((radio) => {
 async function fetchGRAIBalance(): Promise<string> {
   try {
     const network = await provider.getNetwork();
-    const graiAddress = graiAddresses[Number(network.chainId)]; // Fix here
+    const graiAddress = networks[chainIdToNetworkKey[Number(network.chainId)]].graiAddress;
 
     if (!graiAddress) {
       throw new Error(`GRAI contract not available for chain ID ${network.chainId}`);
@@ -190,11 +215,9 @@ document.getElementById("sendTx")?.addEventListener("click", async () => {
 
     //const chainIdHex = await network.provider.send('eth_chainId');
     const network = await provider.getNetwork();
-    const chainIdHex = "0x" + network.chainId.toString(16);
+    const currentNetworkName = chainIdToNetworkKey[Number(network.chainId)];
+    const graiAddress = networks[currentNetworkName].graiAddress;
 
-    console.log(`Current network chainId (hex): ${chainIdHex}`);
-
-    const graiAddress = graiAddresses[network.chainId];
     if (!graiAddress) {
       console.error(`GRAI contract not available for chain ID ${network.chainId}`);
       return;
@@ -211,12 +234,6 @@ document.getElementById("sendTx")?.addEventListener("click", async () => {
     
     // See https://docs.gravitaprotocol.com/gravita-docs/about-gravita-protocol/smart-contracts
     // for contract addresses on diff chains. 
-     
-    //use arbitrum assignments as default
-    let vessel_mgr_addr = '0x6AdAA3eBa85c77e8566b73AEfb4C2f39Df4046Ca'
-    let vessel_mgr_ops_addr = '0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4'
-    let sorted_vessels_addr = '0xc49B737fa56f9142974a54F6C66055468eC631d0'
-    let price_feed_addr = '0xF0e0915D233C616CB727E0b2Ca29ff0cbD51B66A'
     
     let collateralAddress: string;
           
@@ -225,83 +242,15 @@ document.getElementById("sendTx")?.addEventListener("click", async () => {
     
     const form = document.getElementById("collateralForm") as HTMLFormElement;
     const formData = new FormData(form);
-    const collateral = formData.get("collateral") as string;
-//    let collateral = "weth";
+    const collateral = formData.get("collateral") as string;    
     
-    if (chainIdHex=="0xa4b1")
-    {
-      console.log("arbitrum")
-      // Set the collateral you want to redeem (ARB)
-      if (collateral=='weth') {
-        collateralAddress = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1" //WETH
-      }
-      if (collateral=='wsteth') {
-        collateralAddress = "0x5979d7b546e38e414f7e9822514be443a4800529" //wstETH
-      }
-      if (collateral=='reth') {
-        collateralAddress = "0xEC70Dcb4A1EFa46b8F2D97C310C9c4790ba5ffA8" //rETH
-      }
-      if (collateral=='sfrxeth') {
-        collateralAddress = "0x95ab45875cffdba1e5f451b950bc2e42c0053f39" //sfrxETH
-      }
-      if (collateral=='weeth') {
-        collateralAddress = "0x35751007a407ca6feffe80b3cb397736d2cf4dbe" //weETH
-      }
-      
-    }
+      const PriceFeed = new ethers.Contract(networks[currentNetworkName].priceFeedAddress, PriceFeedArtifact.abi, signer)
+      const vesselManager = new ethers.Contract(networks[currentNetworkName].vesselManagerAddress, VesselManagerArtifact.abi, signer);
+      const vesselManagerOperations = new ethers.Contract(networks[currentNetworkName].vesselManagerOperationsAddress, VesselManagerOperationsArtifact.abi, signer);
+      const sortedVessels = new ethers.Contract(networks[currentNetworkName].sortedVesselsAddress, SortedVesselsArtifact.abi, signer);
     
-    if (chainIdHex=="0x144")
-    {
-      console.log("zksync")
-      vessel_mgr_addr = '0x8D9CDd9372740933702d606EaD3BB55dFfDC6303'
-      vessel_mgr_ops_addr = '0x03569d4c117f94e72e9f63B06F406c5bc7caddE9'
-      sorted_vessels_addr = '0x48dF3880Be9dFAAC56960325FA9a32B31fd351EA'
-    
-      if (collateral=='weth') {
-        collateralAddress = "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91" //WETH
-      }
-    
-      if (collateral=='wsteth') {
-        collateralAddress = "0x703b52f2b28febcb60e1372858af5b18849fe867" //wstETH
-      }
-      price_feed_addr = '0x086D0981204b3e603Bf8b70D42680DA10b4dDa31'
-    }
-    
-    if (chainIdHex=="0x1")
-      {
-        console.log("mainnet")
-        vessel_mgr_addr = '0xdB5DAcB1DFbe16326C3656a88017f0cB4ece0977'
-        vessel_mgr_ops_addr = '0xc49B737fa56f9142974a54F6C66055468eC631d0'
-        sorted_vessels_addr = '0xF31D88232F36098096d1eB69f0de48B53a1d18Ce'
-        price_feed_addr = '0x89F1ecCF2644902344db02788A790551Bb070351'
-      
-        if (collateral=='weth') {
-          collateralAddress = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2" //WETH
-        }
-      
-        if (collateral=='wsteth') {
-          collateralAddress = "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0" //wstETH
-        }
+      collateralAddress = networks[currentNetworkName].availableCollaterals[collateral];
 
-        if (collateral=='sweth') {
-          collateralAddress = "0xf951E335afb289353dc249e82926178EaC7DEd78" //swETH
-        }
-
-        if (collateral=='reth') {
-          collateralAddress = "0xae78736cd615f374d3085123a210448e74fc6393" //rETH
-        }
-
-        if (collateral=='weeth') {
-          collateralAddress = "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee" //weETH
-        }
-      }
-    
-
-      const PriceFeed = new ethers.Contract(price_feed_addr, PriceFeedArtifact.abi, signer)
-      const vesselManager = new ethers.Contract(vessel_mgr_addr, VesselManagerArtifact.abi, signer);
-      const vesselManagerOperations = new ethers.Contract(vessel_mgr_ops_addr, VesselManagerOperationsArtifact.abi, signer);
-      const sortedVessels = new ethers.Contract(sorted_vessels_addr, SortedVesselsArtifact.abi, signer);
-    
       var price = await PriceFeed.fetchPrice(collateralAddress);
       console.log(collateral, " Price: ", price);
 
@@ -373,10 +322,11 @@ document.getElementById("sendTx")?.addEventListener("click", async () => {
 async function initializeNetworkSwitcher() {
   const provider = new ethers.BrowserProvider(window.ethereum);
   const network = await provider.getNetwork();
-  const currentChainId = `0x${network.chainId.toString(16)}`; // Convert to hex
+  const chainId = Number(network.chainId); // Fix here
+
 
   const selectedNetworkKey = Object.keys(networks).find(
-    (key) => networks[key].chainId === currentChainId
+    (key) => networks[key].chainId === chainId
   );
 
   if (selectedNetworkKey) {
@@ -392,7 +342,7 @@ async function initializeNetworkSwitcher() {
 }
 
 function updateCollateralOptions(networkKey: string) {
-  const availableCollaterals = networks[networkKey].availableCollaterals;
+  const availableCollaterals = Object.keys(networks[networkKey].availableCollaterals);
   const allCollaterals = document.querySelectorAll<HTMLInputElement>(
     'input[name="collateral"]'
   );
@@ -407,7 +357,7 @@ function updateCollateralOptions(networkKey: string) {
       }
     }
   });
-  updateGRAIBalance();
+  //updateGRAIBalance();
 }
 
 // Reinitialize collaterals on network change
@@ -415,7 +365,6 @@ window.ethereum.on("chainChanged", () => {
   initializeNetworkSwitcher();
 });
 
-// Initialize app on load
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
   initialize();
