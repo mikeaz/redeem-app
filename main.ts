@@ -98,6 +98,8 @@ async function switchNetwork(chainId: string) {
       console.error("Failed to switch network:", error);
     }
   }
+
+  updateGRAIBalance();
 }
 
 document.querySelectorAll('input[name="network"]').forEach((radio) => {
@@ -405,6 +407,7 @@ function updateCollateralOptions(networkKey: string) {
       }
     }
   });
+  updateGRAIBalance();
 }
 
 // Reinitialize collaterals on network change
