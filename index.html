@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRAI Redemption Helper</title>
+  <style>
+    /* Dark theme styles */
+    body {
+      background-color: #121212;
+      color: #d3d3d3;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      color: #ffffff;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    form {
+      margin: 20px;
+      padding: 10px;
+      background-color: #1e1e1e;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column; /* Stack elements vertically */
+      align-items: center; /* Center elements horizontally */
+    }
+
+    .form-group {
+      display: block;
+      align-items: center; /* Center elements horizontally */
+      margin-bottom: 15px;
+    }
+
+    input, button {
+      background-color: #2a2a2a;
+      color: #ffffff;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 10px;
+      margin: 5px 0;
+    }
+
+    input[type="radio"] {
+      width: auto;
+      margin-right: 5px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3a3a3a;
+    }
+
+    label {
+      display: block;
+      margin-right: 10px;
+    }
+
+    .radio-group {
+    display: block;
+    gap: 10px; /* Space between buttons */
+  }
+
+  .radio-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2a2a2a; /* Default dark background */
+    color: #ffffff; /* White text */
+    border: 1px solid #444; /* Subtle border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer;
+    user-select: none; /* Prevent text selection on click */
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .radio-button input[type="radio"] {
+    display: none; /* Hide the default radio button */
+  }
+
+  .radio-button span {
+    display: inline-block; /* Ensure the text spans the button area */
+  }
+
+  .radio-button:hover {
+    background-color: #3a3a3a; /* Slightly lighter background on hover */
+  }
+
+  /* Keep the button blue when selected */
+  .radio-button input[type="radio"]:checked + span {
+    background-color: #007bffa4;
+    color: #ffffff;
+    padding: 0px 0px; /* Match the parent padding */
+    border-radius:10px;
+    display: inline-block;
+  }
+
+  #sendTx {
+  display: block; /* Make the button a block element to center it */
+  margin: 20px auto; /* Center horizontally and add vertical spacing */
+  padding: 15px 30px; /* Increase padding for a bigger button */
+  font-size: 18px; /* Increase font size for better readability */
+  background-color: #007bff; /* Blue background */
+  color: #ffffff; /* White text */
+  border: none; /* Remove border */
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.2s ease; /* Smooth hover transition */
+}
+
+#sendTx:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+  </style>
+  <script type="module" crossorigin src="/redeem-app/assets/index-WYv3ooR2.js"></script>
+</head>
+<body>
+  <h1>GRAI Redemption Helper</h1>
+  <form id="networkForm">
+      <div class="radio-group">
+        <label class="radio-button">
+          <input type="radio" name="network" value="eth" checked>
+        <span>Mainnet</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="network" value="arbitrum">
+        <span>Arbitrum</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="network" value="zksync">
+        <span>zkSync Era</span>
+      </label>
+      </div>
+  </form>
+  <form id="collateralForm">
+    <label>Collateral:</label>
+    <div class="radio-group">
+      <label class="radio-button">
+        <input type="radio" name="collateral" value="weth" checked>
+        <span>WETH</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="collateral" value="wsteth">
+        <span>wstETH</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="collateral" value="weeth">
+        <span>weETH</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="collateral" value="reth">
+        <span>rETH</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="collateral" value="sfrxeth">
+        <span>sfrxETH</span>
+      </label>
+      <label class="radio-button">
+        <input type="radio" name="collateral" value="sweth">
+        <span>swETH</span>
+      </label>
+      <br><br>
+      <div class="form-group">
+        <label for="graiAmount">Amount of GRAI to Redeem:</label>
+        <input type="number" id="graiAmount" placeholder="Enter amount">
+        <button type="button" id="maxGRAI">MAX</button>
+        <br><br>
+        <label for="graiBalance">Current GRAI Balance:</label>
+        <span id="graiBalance"></span>
+      </div>
+    </div>
+  </form>
+  <button id="sendTx">Redeem Collateral</button>
+</body>
+</html>
