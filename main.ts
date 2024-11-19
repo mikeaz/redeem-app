@@ -138,6 +138,24 @@ document.querySelectorAll('input[name="network"]').forEach((radio) => {
     } else {
       alert("Invalid network selection");
     }
+
+    //[!] This is now a repeated code block
+    /*
+    const form2 = document.getElementById("collateralForm") as HTMLFormElement;
+    const formData2 = new FormData(form2);
+    const collateral = formData2.get("collateral") as string;   
+  
+    const collateralAddress = networks[selectedNetwork].availableCollaterals[collateral];
+
+    const graiAmount = (document.getElementById("graiAmount") as HTMLInputElement).value; // Get GRAI amount from input
+
+    await getQuote(collateralAddress, graiAmount);
+    */
+    //[!] This is now a repeated code block
+
+    //Clear Quote on Network switch
+    const quoteResult = document.getElementById("quoteResult") as HTMLElement;
+    quoteResult.textContent = "...";
   });
 });
 
