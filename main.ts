@@ -141,6 +141,32 @@ document.querySelectorAll('input[name="network"]').forEach((radio) => {
   });
 });
 
+//Re-run quote as soon as collateral is switched
+document.querySelectorAll('input[name="collateral"]').forEach((radio) => {
+  radio.addEventListener("change", async (event) => {
+    const selectedCollateral = (event.target as HTMLInputElement).value; // Get the value of the selected radio button
+
+    //[!] This is now a repeated code block
+    const network = await provider.getNetwork();
+    const currentNetworkName = chainIdToNetworkKey[Number(network.chainId)];
+  
+    const form = document.getElementById("collateralForm") as HTMLFormElement;
+    const formData = new FormData(form);
+    const collateral = formData.get("collateral") as string;   
+  
+    const collateralAddress = networks[currentNetworkName].availableCollaterals[collateral];
+    //[!] This is now a repeated code block
+
+    const graiAmount = (document.getElementById("graiAmount") as HTMLInputElement).value; // Get GRAI amount from input
+    if (!graiAmount) {
+      //alert("Please enter a GRAI amount.");
+      return;
+    }
+
+    await getQuote(collateralAddress, graiAmount);
+  });
+});
+
 // Determine the network and fetch the balance using the appropriate GRAI address
 async function fetchGRAIBalance(): Promise<string> {
   try {
@@ -171,6 +197,58 @@ document.getElementById("maxGRAI")?.addEventListener("click", async () => {
   } catch (error) {
     console.error("Error setting MAX GRAI:", error);
   }
+});
+
+async function getQuote(collateralAddress: string, graiAmount: string) {
+  const quoteResult = document.getElementById("quoteResult") as HTMLElement;
+  quoteResult.textContent = "...";
+
+  const network = await provider.getNetwork();
+  const currentNetworkName = chainIdToNetworkKey[Number(network.chainId)];
+
+  const vesselManager = new ethers.Contract(networks[currentNetworkName].vesselManagerAddress, VesselManagerArtifact.abi, signer);
+  const vesselManagerOperations = new ethers.Contract(networks[currentNetworkName].vesselManagerOperationsAddress, VesselManagerOperationsArtifact.abi, signer);
+
+
+  try {
+    const graiAmountInWei = ethers.parseUnits(graiAmount, 18); // Convert GRAI amount to wei
+    const redemptionSofteningParam = await vesselManagerOperations.redemptionSofteningParam();
+    const softeningFloat = Number(redemptionSofteningParam) / 10000;
+
+    const redemptionRateWithDecay = await vesselManager.getRedemptionRateWithDecay(collateralAddress);
+    const rateFloat = Number(redemptionRateWithDecay) / Number(1e18)
+
+    const entireSystemDebt = await vesselManager.getEntireSystemDebt(collateralAddress);
+
+    const feeRateForAmount = rateFloat + 0.5 * (Number(graiAmountInWei) / Number(entireSystemDebt))
+    const quote = Number(graiAmount) * (1 * softeningFloat - feeRateForAmount)
+
+    // Step 4: Display the quote in `quoteResult`
+    quoteResult.textContent = quote.toFixed(4) + " USD";
+
+  } catch (error) {
+    console.error("Error fetching quote:", error);
+    quoteResult.textContent = "Error calculating quote.";
+  }
+}
+
+// Event listener for the "QUOTE" button
+document.getElementById("quote")?.addEventListener("click", async () => {
+  const network = await provider.getNetwork();
+  const currentNetworkName = chainIdToNetworkKey[Number(network.chainId)];
+
+  const form = document.getElementById("collateralForm") as HTMLFormElement;
+  const formData = new FormData(form);
+  const collateral = formData.get("collateral") as string;   
+
+  const collateralAddress = networks[currentNetworkName].availableCollaterals[collateral];
+  const graiAmount = (document.getElementById("graiAmount") as HTMLInputElement).value;
+  if (!graiAmount) {
+    alert("Please enter the GRAI amount.");
+    return;
+  }
+
+  await getQuote(collateralAddress, graiAmount);
 });
 
 // Wait for the DOM to be ready
@@ -367,6 +445,8 @@ window.ethereum.on("chainChanged", () => {
 
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
+  const quoteResult = document.getElementById("quoteResult") as HTMLElement;
+  quoteResult.textContent = "Enter amount for quote";
   initialize();
   initializeNetworkSwitcher();
 });
