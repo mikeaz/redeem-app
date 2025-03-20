@@ -42,6 +42,7 @@ const networks = {
       weeth: "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
       reth: "0xae78736cd615f374d3085123a210448e74fc6393",
       sweth: "0xf951E335afb289353dc249e82926178EaC7DEd78",
+      oseth: "0xf1c9acdc66974dfb6decb12aa385b9cd01190e38",
     },
     graiAddress: "0x15f74458aE0bFdAA1a96CA1aa779D715Cc1Eefe4", // GRAI on Ethereum
     vesselManagerAddress: "0xdB5DAcB1DFbe16326C3656a88017f0cB4ece0977",
