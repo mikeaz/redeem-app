@@ -100,6 +100,48 @@ const networks = {
     priceFeedAddress: "0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4", // from tx 
     // 💡 Look at "Transfer Ownership" tx's from Gravita Deployer to determine real proxy front-end CA's needed. 
   },
+  linea: {
+    chainId: 59144, // Linea Mainnet chainId in hex (59144 in decimal)
+    chainName: "Linea Mainnet",
+    rpcUrl: "https://rpc.linea.build", // Optional
+    availableCollaterals: {
+      weth: "0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f",
+      wsteth: "0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F",
+      weeth: "0x1Bf74C010E6320bab11e2e5A532b5AC15e0b8aA6",
+    },
+    graiAddress: "0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487", 
+    vesselManagerAddress: "0xdC44093198ee130f92DeFed22791aa8d8df7fBfA",
+    vesselManagerOperationsAddress: "0x53525a62e55B6002792B993a2C27Af70d12443e4",
+    sortedVesselsAddress: "0xF0e0915D233C616CB727E0b2Ca29ff0cbD51B66A",
+    priceFeedAddress: "0xAD1B9867BEFD148c9476B9Dd1e7C749bFcefbB2e",
+  },
+  mantle: {
+    chainId: 5000, // Mantle Mainnet chainId in hex (5000 in decimal)
+    chainName: "Mantle Mainnet",
+    rpcUrl: "https://rpc.mantlenetwork.com", // Optional
+    availableCollaterals: {
+      weth: "0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111",
+      meth: "0xcDA86A272531e8640cD7F1a92c01839911B90bb0",
+    },
+    graiAddress: "0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487",
+    vesselManagerAddress: "0x5C3B45c9F9C6e3d37De94BC03318622D3DD3f525",
+    vesselManagerOperationsAddress: "0x10308774e482e16671d8DCc847AC6b701f516611",
+    sortedVesselsAddress: "0x15f74458aE0bFdAA1a96CA1aa779D715Cc1Eefe4",
+    priceFeedAddress: "0x53525a62e55B6002792B993a2C27Af70d12443e4",
+  },
+  zkevm: {
+    chainId: 1101, // zkEVM Mainnet chainId in hex (1101 in decimal)
+    chainName: "zkEVM Mainnet",
+    rpcUrl: "https://zkevm-rpc.com", // Optional
+    availableCollaterals: {
+      weth: "0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9",
+    },
+    graiAddress: "0xCA68ad4EE5c96871EC6C6dac2F714a8437A3Fe66",
+    vesselManagerAddress: "0x57a1953bF194A1EF73396e442Ac7Dc761dCd23cc",
+    vesselManagerOperationsAddress: "0x9D8bB5496332cbeeD59f1211f28dB8b5Eb214B6D",
+    sortedVesselsAddress: "0x40E0e274A42D9b1a9D4B64dC6c46D21228d45C20",
+    priceFeedAddress: "0x5C3B45c9F9C6e3d37De94BC03318622D3DD3f525",
+  },
 };
 
 // Create chainId-to-networkKey mapping
