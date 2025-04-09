@@ -81,6 +81,25 @@ const networks = {
     sortedVesselsAddress: "0x48dF3880Be9dFAAC56960325FA9a32B31fd351EA",
     priceFeedAddress: "0x086D0981204b3e603Bf8b70D42680DA10b4dDa31",
   },
+  optimism: {
+    chainId: 10, // Optimism chainId in hex (10 in decimal) 
+    chainName: "Optimism",
+    rpcUrl: "https://mainnet.optimism.io", // Optional
+    availableCollaterals: {
+      weth: "0x4200000000000000000000000000000000000006",
+      wsteth: "0x1f32b1c2345538c0c6f582fcb022739c4a194ebb",
+    },
+    graiAddress: "0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487", // GRAI on OP
+    // This is NOT the address listed on the docs!
+    // vesselManagerAddress: "0xc49b737fa56f9142974a54f6c66055468ec631d0", //no
+    vesselManagerAddress: "0x40E0e274A42D9b1a9D4B64dC6c46D21228d45C20", //yes
+    vesselManagerOperationsAddress: "0x5Bd5b45f6565762928A79779F6C2DD43c15c92EE", //REAL VMO FROM REDEEM TX
+    // sortedVesselsAddress: "0x4f39f12064d83f6dd7a2bdb0d53af8be560356a6", //no
+    sortedVesselsAddress: "0x0D2c4aE1859c4F8BFd47755d52cE844B26cb2a09", //yes
+    // priceFeedAddress: "0x57a1953bf194a1ef73396e442ac7dc761dcd23cc",
+    priceFeedAddress: "0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4", // from tx 
+    // 💡 Look at "Transfer Ownership" tx's from Gravita Deployer to determine real proxy front-end CA's needed. 
+  },
 };
 
 // Create chainId-to-networkKey mapping
