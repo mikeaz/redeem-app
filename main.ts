@@ -2,10 +2,10 @@
 import { ethers } from "ethers";
 
 import PriceFeedArtifact from "./artifacts/contracts/PriceFeed.sol/PriceFeed.json"; // Adjust the path as necessary
-//import PriceFeedL2Artifact from "./artifacts/contracts/Pricing/PriceFeedL2.sol/PriceFeedL2.json"; // Adjust the path as necessary
-import VesselManagerArtifact from "./artifacts/contracts/VesselManager.sol/VesselManager.json"; // Adjust the path as necessary
-import VesselManagerOperationsArtifact from "./artifacts/contracts/VesselManagerOperations.sol/VesselManagerOperations.json"; // Adjust the path as necessary
-import SortedVesselsArtifact from "./artifacts/contracts/SortedVessels.sol/SortedVessels.json"; // Adjust the path as necessary
+  //likely same
+import TroveManagerArtifact from "./TroveManager.json"; // Adjust the path as necessary
+import HintHelpersArtifact from "./HintHelpers.json"; // Adjust the path as necessary
+import SortedTrovesArtifact from "./SortedTroves.json"; // Adjust the path as necessary
 import DebtTokenArtifact from "./artifacts/contracts/DebtToken.sol/DebtToken.json";
 
 // Declare provider and signer globally
@@ -46,9 +46,9 @@ const networks = {
       blusd: "0xB9D7DdDca9a4AC480991865EfEf82E01273F79C3",
     },
     graiAddress: "0x15f74458aE0bFdAA1a96CA1aa779D715Cc1Eefe4", // GRAI on Ethereum
-    vesselManagerAddress: "0xdB5DAcB1DFbe16326C3656a88017f0cB4ece0977",
-    vesselManagerOperationsAddress: "0xc49B737fa56f9142974a54F6C66055468eC631d0",
-    sortedVesselsAddress: "0xF31D88232F36098096d1eB69f0de48B53a1d18Ce",
+    troveManagerAddress: "0xdB5DAcB1DFbe16326C3656a88017f0cB4ece0977",
+    hintHelpersAddress: "0xc49B737fa56f9142974a54F6C66055468eC631d0",
+    SortedTrovesAddress: "0xF31D88232F36098096d1eB69f0de48B53a1d18Ce",
     priceFeedAddress: "0x89F1ecCF2644902344db02788A790551Bb070351",
   },
   arbitrum: {
@@ -63,9 +63,9 @@ const networks = {
       sfrxeth: "0x95ab45875cffdba1e5f451b950bc2e42c0053f39",
     }, 
     graiAddress: "0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487", // GRAI on Arbitrum
-    vesselManagerAddress: "0x6AdAA3eBa85c77e8566b73AEfb4C2f39Df4046Ca",
-    vesselManagerOperationsAddress: "0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4",
-    sortedVesselsAddress: "0xc49B737fa56f9142974a54F6C66055468eC631d0",
+    troveManagerAddress: "0x6AdAA3eBa85c77e8566b73AEfb4C2f39Df4046Ca",
+    hintHelpersAddress: "0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4",
+    SortedTrovesAddress: "0xc49B737fa56f9142974a54F6C66055468eC631d0",
     priceFeedAddress: "0xF0e0915D233C616CB727E0b2Ca29ff0cbD51B66A",
   },
   zksync: {
@@ -77,9 +77,9 @@ const networks = {
       wsteth: "0x703b52f2b28febcb60e1372858af5b18849fe867",
     },
     graiAddress: "0x5FC44E95eaa48F9eB84Be17bd3aC66B6A82Af709", // GRAI on zkSync
-    vesselManagerAddress: "0x8D9CDd9372740933702d606EaD3BB55dFfDC6303",
-    vesselManagerOperationsAddress: "0x03569d4c117f94e72e9f63B06F406c5bc7caddE9",
-    sortedVesselsAddress: "0x48dF3880Be9dFAAC56960325FA9a32B31fd351EA",
+    troveManagerAddress: "0x8D9CDd9372740933702d606EaD3BB55dFfDC6303",
+    hintHelpersAddress: "0x03569d4c117f94e72e9f63B06F406c5bc7caddE9",
+    SortedTrovesAddress: "0x48dF3880Be9dFAAC56960325FA9a32B31fd351EA",
     priceFeedAddress: "0x086D0981204b3e603Bf8b70D42680DA10b4dDa31",
   },
   optimism: {
@@ -89,12 +89,13 @@ const networks = {
     availableCollaterals: {
       weth: "0x4200000000000000000000000000000000000006",
       wsteth: "0x1f32b1c2345538c0c6f582fcb022739c4a194ebb",
+      wbtc: "0x68f180fcce6836688e9084f035309e29bf0a2095",
     },
-    graiAddress: "0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487", // GRAI on OP
-    vesselManagerAddress: "0x40E0e274A42D9b1a9D4B64dC6c46D21228d45C20", //yes
-    vesselManagerOperationsAddress: "0x5Bd5b45f6565762928A79779F6C2DD43c15c92EE", //REAL VMO FROM REDEEM TX
-    sortedVesselsAddress: "0x0D2c4aE1859c4F8BFd47755d52cE844B26cb2a09", //yes
-    priceFeedAddress: "0x15f74458aE0bFdAA1a96CA1aa779D715Cc1Eefe4", // from tx 
+    graiAddress: "0xc5b001dc33727f8f26880b184090d3e252470d45", // GRAI on OP
+    troveManagerAddress: "0x75c72f459f2054b46cefd6d10ec99d0fbd777f05", //yes
+    hintHelpersAddress: "0xa253c8b11fc03ea74710cf668d86fd9fdbf8e550", //REAL VMO FROM REDEEM TX
+    SortedTrovesAddress: "0xe36e5aa08756074d7e12d6a753b5ed2c54aea573", //yes
+    priceFeedAddress: "0xadd6F326a395629926D9a535d809B5e3d8c7FE8d", // from tx 
     // 💡 Look at "Transfer Ownership" tx's from Gravita Deployer to determine real proxy front-end CA's needed. 
   },
   linea: {
@@ -107,9 +108,9 @@ const networks = {
       weeth: "0x1Bf74C010E6320bab11e2e5A532b5AC15e0b8aA6",
     },
     graiAddress: "0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487", 
-    vesselManagerAddress: "0xdC44093198ee130f92DeFed22791aa8d8df7fBfA",
-    vesselManagerOperationsAddress: "0x53525a62e55B6002792B993a2C27Af70d12443e4",
-    sortedVesselsAddress: "0xF0e0915D233C616CB727E0b2Ca29ff0cbD51B66A",
+    troveManagerAddress: "0xdC44093198ee130f92DeFed22791aa8d8df7fBfA",
+    hintHelpersAddress: "0x53525a62e55B6002792B993a2C27Af70d12443e4",
+    SortedTrovesAddress: "0xF0e0915D233C616CB727E0b2Ca29ff0cbD51B66A",
     priceFeedAddress: "0xAD1B9867BEFD148c9476B9Dd1e7C749bFcefbB2e",
   },
   mantle: {
@@ -121,9 +122,9 @@ const networks = {
       meth: "0xcDA86A272531e8640cD7F1a92c01839911B90bb0",
     },
     graiAddress: "0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487",
-    vesselManagerAddress: "0x5C3B45c9F9C6e3d37De94BC03318622D3DD3f525",
-    vesselManagerOperationsAddress: "0x10308774e482e16671d8DCc847AC6b701f516611",
-    sortedVesselsAddress: "0x15f74458aE0bFdAA1a96CA1aa779D715Cc1Eefe4",
+    troveManagerAddress: "0x5C3B45c9F9C6e3d37De94BC03318622D3DD3f525",
+    hintHelpersAddress: "0x10308774e482e16671d8DCc847AC6b701f516611",
+    SortedTrovesAddress: "0x15f74458aE0bFdAA1a96CA1aa779D715Cc1Eefe4",
     priceFeedAddress: "0x53525a62e55B6002792B993a2C27Af70d12443e4",
   },
   zkevm: {
@@ -134,9 +135,9 @@ const networks = {
       weth: "0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9",
     },
     graiAddress: "0xCA68ad4EE5c96871EC6C6dac2F714a8437A3Fe66",
-    vesselManagerAddress: "0x57a1953bF194A1EF73396e442Ac7Dc761dCd23cc",
-    vesselManagerOperationsAddress: "0x9D8bB5496332cbeeD59f1211f28dB8b5Eb214B6D",
-    sortedVesselsAddress: "0x40E0e274A42D9b1a9D4B64dC6c46D21228d45C20",
+    troveManagerAddress: "0x57a1953bF194A1EF73396e442Ac7Dc761dCd23cc",
+    hintHelpersAddress: "0x9D8bB5496332cbeeD59f1211f28dB8b5Eb214B6D",
+    SortedTrovesAddress: "0x40E0e274A42D9b1a9D4B64dC6c46D21228d45C20",
     priceFeedAddress: "0x5C3B45c9F9C6e3d37De94BC03318622D3DD3f525",
   },
 };
@@ -277,36 +278,36 @@ document.getElementById("maxGRAI")?.addEventListener("click", async () => {
 });
 
 async function getQuote(collateralAddress: string, graiAmount: string) {
-  const quoteResult = document.getElementById("quoteResult") as HTMLElement;
-  quoteResult.textContent = "...";
+  // const quoteResult = document.getElementById("quoteResult") as HTMLElement;
+  // quoteResult.textContent = "...";
 
-  const network = await provider.getNetwork();
-  const currentNetworkName = chainIdToNetworkKey[Number(network.chainId)];
+  // const network = await provider.getNetwork();
+  // const currentNetworkName = chainIdToNetworkKey[Number(network.chainId)];
 
-  const vesselManager = new ethers.Contract(networks[currentNetworkName].vesselManagerAddress, VesselManagerArtifact.abi, signer);
-  const vesselManagerOperations = new ethers.Contract(networks[currentNetworkName].vesselManagerOperationsAddress, VesselManagerOperationsArtifact.abi, signer);
+  // const troveManager = new ethers.Contract(networks[currentNetworkName].troveManagerAddress, troveManagerArtifact.abi, signer);
+  // const hintHelpers = new ethers.Contract(networks[currentNetworkName].hintHelpersAddress, hintHelpersArtifact.abi, signer);
 
 
-  try {
-    const graiAmountInWei = ethers.parseUnits(graiAmount, 18); // Convert GRAI amount to wei
-    const redemptionSofteningParam = await vesselManagerOperations.redemptionSofteningParam();
-    const softeningFloat = Number(redemptionSofteningParam) / 10000;
+  // try {
+  //   const graiAmountInWei = ethers.parseUnits(graiAmount, 18); // Convert GRAI amount to wei
+  //   const redemptionSofteningParam = await hintHelpers.redemptionSofteningParam();
+  //   const softeningFloat = Number(redemptionSofteningParam) / 10000;
 
-    const redemptionRateWithDecay = await vesselManager.getRedemptionRateWithDecay(collateralAddress);
-    const rateFloat = Number(redemptionRateWithDecay) / Number(1e18)
+  //   const redemptionRateWithDecay = await troveManager.getRedemptionRateWithDecay(collateralAddress);
+  //   const rateFloat = Number(redemptionRateWithDecay) / Number(1e18)
 
-    const entireSystemDebt = await vesselManager.getEntireSystemDebt(collateralAddress);
+  //   const entireSystemDebt = await troveManager.getEntireSystemDebt(collateralAddress);
 
-    const feeRateForAmount = rateFloat + 0.5 * (Number(graiAmountInWei) / Number(entireSystemDebt))
-    const quote = Number(graiAmount) * (1 * softeningFloat - feeRateForAmount)
+  //   const feeRateForAmount = rateFloat + 0.5 * (Number(graiAmountInWei) / Number(entireSystemDebt))
+  //   const quote = Number(graiAmount) * (1 * softeningFloat - feeRateForAmount)
 
-    // Step 4: Display the quote in `quoteResult`
-    quoteResult.textContent = quote.toFixed(4) + " USD";
+  //   // Step 4: Display the quote in `quoteResult`
+  //   quoteResult.textContent = quote.toFixed(4) + " USD";
 
-  } catch (error) {
-    console.error("Error fetching quote:", error);
-    quoteResult.textContent = "Error calculating quote.";
-  }
+  // } catch (error) {
+  //   console.error("Error fetching quote:", error);
+  //   quoteResult.textContent = "Error calculating quote.";
+  // }
 }
 
 // Event listener for the "QUOTE" button
@@ -400,9 +401,9 @@ document.getElementById("sendTx")?.addEventListener("click", async () => {
     const collateral = formData.get("collateral") as string;    
     
       const PriceFeed = new ethers.Contract(networks[currentNetworkName].priceFeedAddress, PriceFeedArtifact.abi, signer)
-      const vesselManager = new ethers.Contract(networks[currentNetworkName].vesselManagerAddress, VesselManagerArtifact.abi, signer);
-      const vesselManagerOperations = new ethers.Contract(networks[currentNetworkName].vesselManagerOperationsAddress, VesselManagerOperationsArtifact.abi, signer);
-      const sortedVessels = new ethers.Contract(networks[currentNetworkName].sortedVesselsAddress, SortedVesselsArtifact.abi, signer);
+      const troveManager = new ethers.Contract(networks[currentNetworkName].troveManagerAddress, TroveManagerArtifact.abi, signer);
+      const hintHelpers = new ethers.Contract(networks[currentNetworkName].hintHelpersAddress, HintHelpersArtifact.abi, signer);
+      const SortedTroves = new ethers.Contract(networks[currentNetworkName].SortedTrovesAddress, SortedTrovesArtifact.abi, signer);
     
       collateralAddress = networks[currentNetworkName].availableCollaterals[collateral];
 
@@ -411,18 +412,18 @@ document.getElementById("sendTx")?.addEventListener("click", async () => {
 
     
        // Get the redemptions hints from the deployed HintHelpers contract
-        var redemptionhint = await vesselManagerOperations.getRedemptionHints(collateralAddress, LUSDAmount, price, 50)
+        var redemptionhint = await hintHelpers.getRedemptionHints(collateralAddress, LUSDAmount, price, 50)
         console.log("Redemption hint: ", redemptionhint);
         var { 0: firstRedemptionHint, 1: partialRedemptionNewICR, 2: truncatedLUSDAmount } = redemptionhint
       
-        const numTroves = await sortedVessels.getSize(collateralAddress)
+        const numTroves = await SortedTroves.getSize(collateralAddress)
         console.log("numTroves: ", numTroves);
         //const numTrials = numTroves.mul('15');
         const numTrials = numTroves * 15n;
         console.log("numTrials: ", numTrials);
         
         // Get the approximate partial redemption hint
-        const { hintAddress: approxPartialRedemptionHint } = await vesselManagerOperations.getApproxHint(collateralAddress, partialRedemptionNewICR, numTrials, 42)
+        const { hintAddress: approxPartialRedemptionHint } = await hintHelpers.getApproxHint(collateralAddress, partialRedemptionNewICR, numTrials, 42)
         
         console.log("HintAddress: ", approxPartialRedemptionHint);
     
@@ -430,7 +431,7 @@ document.getElementById("sendTx")?.addEventListener("click", async () => {
         /* Use the approximate partial redemption hint to get the exact partial redemption hint from the 
         * deployed SortedTroves contract
         */
-        const exactPartialRedemptionHint = (await sortedVessels.findInsertPosition(collateralAddress,partialRedemptionNewICR,
+        const exactPartialRedemptionHint = (await SortedTroves.findInsertPosition(collateralAddress,partialRedemptionNewICR,
           approxPartialRedemptionHint,
           approxPartialRedemptionHint))
       
@@ -451,7 +452,7 @@ document.getElementById("sendTx")?.addEventListener("click", async () => {
           
     
           
-        const tx = await vesselManagerOperations.redeemCollateral(
+        const tx = await troveManager.redeemCollateral(
             collateralAddress,
             truncatedLUSDAmount,
             firstRedemptionHint,
