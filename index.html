@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GRAI Redemption Helper</title>
+  <title>ERN Redemption Helper</title>
   <style>
     /* Dark theme styles */
     body {
@@ -120,36 +120,12 @@
   </style>
 </head>
 <body>
-  <h1>GRAI Redemption Helper</h1>
+  <h1>ERN Redemption Helper</h1>
   <form id="networkForm">
       <div class="radio-group">
-        <label class="radio-button">
-          <input type="radio" name="network" value="eth" checked>
-        <span>Mainnet</span>
-      </label>
-      <label class="radio-button">
-        <input type="radio" name="network" value="arbitrum">
-        <span>Arbitrum</span>
-      </label>
-      <label class="radio-button">
-        <input type="radio" name="network" value="zksync">
-        <span>zkSync Era</span>
-      </label>
       <label class="radio-button">
         <input type="radio" name="network" value="optimism">
-        <span>Optimism</span>
-      </label>
-      <label class="radio-button">
-        <input type="radio" name="network" value="linea">
-        <span>Linea</span>
-      </label>
-      <label class="radio-button">
-        <input type="radio" name="network" value="mantle">
-        <span>Mantle</span>
-      </label>
-      <label class="radio-button">
-        <input type="radio" name="network" value="zkevm">
-        <span>Polygon zkEVM</span>
+        <span>v2.1</span>
       </label>
       </div>
   </form>
@@ -198,13 +174,13 @@
       </label>
       <br><br>
       <div class="form-group">
-        <label for="graiAmount">Amount of GRAI to Redeem:</label>
-        <input type="number" id="graiAmount" placeholder="Enter amount">
-        <button type="button" id="maxGRAI">MAX</button>
+        <label for="ernAmount">Amount of ERN to Redeem:</label>
+        <input type="number" id="ernAmount" placeholder="Enter amount">
+        <button type="button" id="maxERN">MAX</button>
         <button type="button" id="quote">QUOTE</button>
         <br><br>
-        <label for="graiBalance">Current GRAI Balance:</label>
-        <span id="graiBalance"></span>
+        <label for="ernBalance">Current ERN Balance:</label>
+        <span id="ernBalance"></span>
         <br><br>
         <label for="quoteResult">Quote:</label>
         <span id="quoteResult"></span>
