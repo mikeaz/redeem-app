@@ -257,11 +257,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_collateral",
-          "type": "address"
-        },
-        {
           "internalType": "uint256",
           "name": "_CR",
           "type": "uint256"
@@ -339,13 +334,8 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_collateral",
-          "type": "address"
-        },
-        {
           "internalType": "uint256",
-          "name": "_LUSDamount",
+          "name": "_amount",
           "type": "uint256"
         },
         {
@@ -373,7 +363,7 @@
         },
         {
           "internalType": "uint256",
-          "name": "truncatedLUSDamount",
+          "name": "truncatedTHUSDamount",
           "type": "uint256"
         }
       ],

@@ -130,12 +130,6 @@
       "inputs": [
         {
           "indexed": false,
-          "internalType": "address",
-          "name": "_collateral",
-          "type": "address"
-        },
-        {
-          "indexed": false,
           "internalType": "uint256",
           "name": "_L_Collateral",
           "type": "uint256"
@@ -179,6 +173,12 @@
     {
       "anonymous": false,
       "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_liquidatedDebt",
+          "type": "uint256"
+        },
         {
           "indexed": false,
           "internalType": "address",
@@ -357,31 +357,6 @@
         }
       ],
       "name": "TotalStakesUpdated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "_borrower",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "_collateral",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_newIndex",
-          "type": "uint256"
-        }
-      ],
-      "name": "TroveIndexUpdated",
       "type": "event"
     },
     {
@@ -1231,13 +1206,7 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_collateral",
-          "type": "address"
-        }
-      ],
+      "inputs": [],
       "name": "getEntireSystemDebt",
       "outputs": [
         {
@@ -1891,11 +1860,6 @@
     },
     {
       "inputs": [
-        {
-          "internalType": "address",
-          "name": "_collateral",
-          "type": "address"
-        },
         {
           "internalType": "uint256",
           "name": "_LUSDamount",

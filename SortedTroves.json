@@ -187,11 +187,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_collateral",
-          "type": "address"
-        },
-        {
           "internalType": "uint256",
           "name": "_NICR",
           "type": "uint256"
@@ -310,13 +305,7 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_collateral",
-          "type": "address"
-        }
-      ],
+      "inputs": [],
       "name": "getSize",
       "outputs": [
         {

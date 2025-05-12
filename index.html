@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ERN Redemption Helper</title>
+  <title>thUSD Redemption Helper</title>
   <style>
     /* Dark theme styles */
     body {
@@ -120,12 +120,12 @@
   </style>
 </head>
 <body>
-  <h1>ERN Redemption Helper</h1>
+  <h1>thUSD Redemption Helper</h1>
   <form id="networkForm">
       <div class="radio-group">
       <label class="radio-button">
-        <input type="radio" name="network" value="optimism">
-        <span>v2.1</span>
+        <input type="radio" name="network" value="eth">
+        <span>Ethereum</span>
       </label>
       </div>
   </form>
@@ -172,15 +172,19 @@
         <input type="radio" name="collateral" value="blusd">
         <span>bLUSD</span>
       </label>
+      <label class="radio-button">
+        <input type="radio" name="collateral" value="tbtc">
+        <span>tBTC</span>
+      </label>
       <br><br>
       <div class="form-group">
-        <label for="ernAmount">Amount of ERN to Redeem:</label>
-        <input type="number" id="ernAmount" placeholder="Enter amount">
-        <button type="button" id="maxERN">MAX</button>
+        <label for="thUSDAmount">Amount of thUSD to Redeem:</label>
+        <input type="number" id="thUSDAmount" placeholder="Enter amount">
+        <button type="button" id="maxthUSD">MAX</button>
         <button type="button" id="quote">QUOTE</button>
         <br><br>
-        <label for="ernBalance">Current ERN Balance:</label>
-        <span id="ernBalance"></span>
+        <label for="thUSDBalance">Current thUSD Balance:</label>
+        <span id="thUSDBalance"></span>
         <br><br>
         <label for="quoteResult">Quote:</label>
         <span id="quoteResult"></span>
